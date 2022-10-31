@@ -55,6 +55,11 @@ deslizamientos = deslizamientos[deslizamientos.fecha >= '2010-01-01']
 print(deslizamientos.shape)
 deslizamientos.head()
 
+municipios = gp.read_file('MGN_ANM_MPIOS.geojson')
+municipios = municipios[['DPTO_CCDGO', 'MPIO_CCDGO', 'geometry']]
+print(municipios.shape)
+municipios.head()
+
 # Obtener los municipios que contienen deslizamientos
 geodata = gp.sjoin(deslizamientos, municipios, how='left', predicate='intersects')
 geodata = geodata[geodata['index_right'].notna()]
