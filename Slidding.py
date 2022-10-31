@@ -52,7 +52,10 @@ class Slidding:
 				self.rasters.append(raster)
 		return self.rasters
 
-	
+	def get_municipios(self):
+		self.municipios = gp.read_file('procesamiento/MGN_ANM_MPIOS.geojson')
+		self.municipios = self.municipios[['DPTO_CCDGO', 'MPIO_CCDGO', 'geometry']]
+		return self.municipios
 
 	def run(self):
 		self.get_rasters()

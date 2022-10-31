@@ -5,6 +5,7 @@ import geopandas as gp
 from matplotlib import pyplot as plt
 from functools import reduce
 from geopandas import GeoDataFrame
+#import geopandas as gpd
 from shapely.geometry import Polygon, Point
 from rasterio.features import shapes
 
@@ -12,10 +13,10 @@ class Precipitation:
 
 	export_rain = pd.DataFrame()
 	municipios = pd.DataFrame()
-	folder = '../Datos/CHIRPS/'
+	folder = 'Datos/CHIRPS/'
 	rasters = []
 
-	def __init__(self, folder =  '../Datos/CHIRPS/') -> None:
+	def __init__(self, folder =  'Datos/CHIRPS/') -> None:
 		self.folder = folder
 
 	def get_date(self, tiff_path):
@@ -34,6 +35,8 @@ class Precipitation:
 		return results
 
 	def get_raster(self, path):
+		from geopandas import GeoDataFrame
+
 		src = rasterio.open(path)
 		crs = src.read_crs()
 		date = self.get_date(path)
@@ -58,6 +61,8 @@ class Precipitation:
 
 	
 	def run(self):
+		from geopandas import GeoDataFrame
+
 		self.get_rasters()
 		self.get_municipios()
 
@@ -76,9 +81,7 @@ class Precipitation:
 		self.export_rain = GeoDataFrame(rain[['geometry', 'DPTO_CCDGO', 'MPIO_CCDGO']])
 		# Agrupar todas las precipitaciones por fecha en un solo campo
 		self.export_rain['precipitation'] = rain.drop(columns=['geometry', 'DPTO_CCDGO', 'MPIO_CCDGO']).to_dict('records')
+		self.export_rain.to_file('precipitaciones.geojson', driver='GeoJSON')
 		return self.export_rain
 
-
-	def export_to_geoJson(self):
-		self.export_rain.to_file('precipitaciones.geojson', driver='GeoJSON')
 		
