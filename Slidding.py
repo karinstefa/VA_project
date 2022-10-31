@@ -58,7 +58,7 @@ class Slidding:
 		self.get_rasters()
 		self.get_municipios()
 		
-		self.deslizamientos = gp.read_file('INVENTARIO_FINAL_MM.csv')
+		self.deslizamientos = gp.read_file('procesamiento/INVENTARIO_FINAL_MM.csv')
 		self.deslizamientos.columns = ['movimiento', 'fecha', 'municipio', 'latitud', 'longitud', 'fuente', 'geometry']
 		self.deslizamientos.geometry = self.deslizamientos.apply(lambda row: Point(float(row['longitud']), float(row['latitud'])), axis=1)
 		# print(deslizamientos.shape)
@@ -75,6 +75,12 @@ class Slidding:
 		return self.deslizamientos
 
 	def export_to_geoJson(self):
+		
+		municipios = gp.read_file('procesamiento/MGN_ANM_MPIOS.geojson')
+		municipios = municipios[['DPTO_CCDGO', 'MPIO_CCDGO', 'geometry']]
+		print(municipios.shape)
+		municipios.head()
+
 		# Obtener los municipios que contienen deslizamientos
 		geodata = gp.sjoin(self.deslizamientos, municipios, how='left', predicate='intersects')
 		geodata = geodata[geodata['index_right'].notna()]

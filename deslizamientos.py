@@ -41,7 +41,7 @@ for file in os.listdir(folder):
         raster = get_raster(path)
         rasters.append(raster)
 
-deslizamientos = gp.read_file('INVENTARIO_FINAL_MM.csv')
+deslizamientos = gp.read_file('procesamiento/INVENTARIO_FINAL_MM.csv')
 deslizamientos.columns = ['movimiento', 'fecha', 'municipio', 'latitud', 'longitud', 'fuente', 'geometry']
 deslizamientos.geometry = deslizamientos.apply(lambda row: Point(float(row['longitud']), float(row['latitud'])), axis=1)
 print(deslizamientos.shape)
@@ -55,7 +55,7 @@ deslizamientos = deslizamientos[deslizamientos.fecha >= '2010-01-01']
 print(deslizamientos.shape)
 deslizamientos.head()
 
-municipios = gp.read_file('MGN_ANM_MPIOS.geojson')
+municipios = gp.read_file('procesamiento/MGN_ANM_MPIOS.geojson')
 municipios = municipios[['DPTO_CCDGO', 'MPIO_CCDGO', 'geometry']]
 print(municipios.shape)
 municipios.head()

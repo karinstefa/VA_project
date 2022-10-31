@@ -46,7 +46,7 @@ print(precipitaciones.shape)
 precipitaciones.fillna(0, inplace=True)
 precipitaciones.head()
 
-municipios = gp.read_file('MGN_ANM_MPIOS.geojson')
+municipios = gp.read_file('procesamiento/MGN_ANM_MPIOS.geojson')
 municipios = municipios[['DPTO_CCDGO', 'MPIO_CCDGO', 'geometry']]
 print(municipios.shape)
 municipios.head()
